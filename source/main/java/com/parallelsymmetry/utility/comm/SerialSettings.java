@@ -1,4 +1,4 @@
-package com.parallelsymmetry.util.comm;
+package com.parallelsymmetry.utility.comm;
 
 import gnu.io.SerialPort;
 
