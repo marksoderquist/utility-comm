@@ -107,7 +107,7 @@ public class SerialAgent extends PipeAgent implements SerialPortEventListener {
 		try {
 			// This odd line of code helps deal with a difference between running in
 			// the real work and running in a development environment.
-			if( SerialAgent.class.getClassLoader() == CommPortIdentifier.class.getClassLoader() ) System.loadLibrary( "rxtxSerial" );
+			//if( SerialAgent.class.getClassLoader() == CommPortIdentifier.class.getClassLoader() ) System.loadLibrary( "rxtxSerial" );
 			CommPortIdentifier.getPortIdentifiers();
 		} catch( UnsatisfiedLinkError error ) {
 			Log.write( Log.DEBUG, error.getMessage() );
