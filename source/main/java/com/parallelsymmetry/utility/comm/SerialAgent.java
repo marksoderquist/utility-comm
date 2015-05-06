@@ -47,24 +47,23 @@ public class SerialAgent extends PipeAgent implements SerialPortEventListener {
 	private byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
 
 	public SerialAgent() {
-		super();
+		this( null );
 	}
 
 	public SerialAgent( String name ) {
 		super( name );
+		if( !isRxtxSerialLibAvailable() ) throw new RuntimeException( "RXTX library is not installed." );
 	}
 
 	public SerialAgent( String name, String port, int baud, int bits, int parity, int stop ) {
-		super( name );
+		this( name );
 		configure( port, baud, bits, parity, stop );
 	}
 
 	public SerialAgent( String name, String port, SerialSettings settings ) {
-		super( name );
+		this( name );
 		this.settings = settings;
 		setStopOnConnectException( true );
-
-		if( !isRxtxSerialLibAvailable() ) throw new RuntimeException( "RXTX library is not installed." );
 	}
 
 	public void configure( String name, int baud, int bits, int parity, int stop ) {
@@ -106,11 +105,14 @@ public class SerialAgent extends PipeAgent implements SerialPortEventListener {
 	public static final boolean isRxtxSerialLibAvailable() {
 		try {
 			// This odd line of code helps deal with a difference between running in
-			// the real work and running in a development environment.
-			//if( SerialAgent.class.getClassLoader() == CommPortIdentifier.class.getClassLoader() ) System.loadLibrary( "rxtxSerial" );
+			// the real world and running in a development environment.
+			if( SerialAgent.class.getClassLoader() == CommPortIdentifier.class.getClassLoader() ) System.loadLibrary( "rxtxSerial" );
+
+			System.loadLibrary( "rxtxSerial" );
+			
 			CommPortIdentifier.getPortIdentifiers();
 		} catch( UnsatisfiedLinkError error ) {
-			Log.write( Log.DEBUG, error.getMessage() );
+			Log.write( Log.WARN, error.getMessage() + ": " + System.getProperty( "java.library.path" ) );
 			return false;
 		}
 		return true;
