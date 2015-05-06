@@ -29,6 +29,8 @@ public class SerialAgent extends PipeAgent implements SerialPortEventListener {
 	private static final int RETRY_COUNT = 10;
 
 	private static final int DEFAULT_BUFFER_SIZE = 256;
+	
+	private static boolean serialCommAvailable;
 
 	private CommPortIdentifier identifier;
 
@@ -45,6 +47,21 @@ public class SerialAgent extends PipeAgent implements SerialPortEventListener {
 	private SerialInputStream serialInput;
 
 	private byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+	
+	static {
+		try {
+			// This odd line of code helps deal with a difference between running in
+			// the real world and running in a development environment.
+			//if( SerialAgent.class.getClassLoader() == CommPortIdentifier.class.getClassLoader() ) System.loadLibrary( "rxtxSerial" );
+
+			System.loadLibrary( "rxtxSerial" );
+			CommPortIdentifier.getPortIdentifiers();
+			serialCommAvailable = true;
+		} catch( UnsatisfiedLinkError error ) {
+			serialCommAvailable = false;
+			Log.write( Log.WARN, error.getMessage() + ": " + System.getProperty( "java.library.path" ) );
+		}
+	}
 
 	public SerialAgent() {
 		this( null );
@@ -52,7 +69,6 @@ public class SerialAgent extends PipeAgent implements SerialPortEventListener {
 
 	public SerialAgent( String name ) {
 		super( name );
-		if( !isRxtxSerialLibAvailable() ) throw new RuntimeException( "RXTX library is not installed." );
 	}
 
 	public SerialAgent( String name, String port, int baud, int bits, int parity, int stop ) {
@@ -102,20 +118,8 @@ public class SerialAgent extends PipeAgent implements SerialPortEventListener {
 		}
 	}
 
-	public static final boolean isRxtxSerialLibAvailable() {
-		try {
-			// This odd line of code helps deal with a difference between running in
-			// the real world and running in a development environment.
-			if( SerialAgent.class.getClassLoader() == CommPortIdentifier.class.getClassLoader() ) System.loadLibrary( "rxtxSerial" );
-
-			System.loadLibrary( "rxtxSerial" );
-			
-			CommPortIdentifier.getPortIdentifiers();
-		} catch( UnsatisfiedLinkError error ) {
-			Log.write( Log.WARN, error.getMessage() + ": " + System.getProperty( "java.library.path" ) );
-			return false;
-		}
-		return true;
+	public static final boolean isSerialCommAvailable() {
+		return serialCommAvailable;
 	}
 
 	@Override
@@ -148,7 +152,7 @@ public class SerialAgent extends PipeAgent implements SerialPortEventListener {
 		if( input != null ) input.close();
 		setRealInputStream( null );
 	}
-
+	
 	private void serialConnect() throws IOException {
 
 		if( settings == null ) {
