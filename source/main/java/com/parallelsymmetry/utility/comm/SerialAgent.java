@@ -14,6 +14,10 @@ import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.TooManyListenersException;
 
 import com.parallelsymmetry.utility.ConfigurationException;
@@ -29,7 +33,7 @@ public class SerialAgent extends PipeAgent implements SerialPortEventListener {
 	private static final int RETRY_COUNT = 10;
 
 	private static final int DEFAULT_BUFFER_SIZE = 256;
-	
+
 	private static boolean serialCommAvailable;
 
 	private CommPortIdentifier identifier;
@@ -47,7 +51,7 @@ public class SerialAgent extends PipeAgent implements SerialPortEventListener {
 	private SerialInputStream serialInput;
 
 	private byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
-	
+
 	static {
 		try {
 			// This odd line of code helps deal with a difference between running in
@@ -122,6 +126,19 @@ public class SerialAgent extends PipeAgent implements SerialPortEventListener {
 		return serialCommAvailable;
 	}
 
+	public static final List<String> getCommPorts() {
+		List<String> ports = new ArrayList<String>();
+
+		Enumeration<?> identifiers = CommPortIdentifier.getPortIdentifiers();
+		while( identifiers.hasMoreElements() ) {
+			ports.add( identifiers.nextElement().toString() );
+		}
+
+		Collections.sort( ports );
+
+		return ports;
+	}
+
 	@Override
 	protected void startAgent() throws Exception {
 		serialConnect();
@@ -152,7 +169,7 @@ public class SerialAgent extends PipeAgent implements SerialPortEventListener {
 		if( input != null ) input.close();
 		setRealInputStream( null );
 	}
-	
+
 	private void serialConnect() throws IOException {
 
 		if( settings == null ) {
@@ -175,7 +192,10 @@ public class SerialAgent extends PipeAgent implements SerialPortEventListener {
 			port.setRTS( false );
 
 			SerialSettings actualSettings = new SerialSettings( port );
-			if( !actualSettings.equals( settings ) ) throw new IOException( "Actual port settings are not requested settings: " + actualSettings + " != " + settings );
+			if( !actualSettings.equals( settings ) ) throw new IOException( "Actual port settings are not requested settings: "
+				+ actualSettings
+				+ " != "
+				+ settings );
 
 			input = port.getInputStream();
 			output = port.getOutputStream();
