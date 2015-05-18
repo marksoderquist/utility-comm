@@ -131,7 +131,8 @@ public class SerialAgent extends PipeAgent implements SerialPortEventListener {
 
 		Enumeration<?> identifiers = CommPortIdentifier.getPortIdentifiers();
 		while( identifiers.hasMoreElements() ) {
-			ports.add( identifiers.nextElement().toString() );
+			CommPortIdentifier identifier = (CommPortIdentifier)identifiers.nextElement();
+			ports.add( identifier.getName() );
 		}
 
 		Collections.sort( ports );
