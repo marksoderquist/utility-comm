@@ -1,12 +1,9 @@
 package com.parallelsymmetry.utility.comm;
 
-import gnu.io.SerialPort;
+import junit.framework.TestCase;
+import purejavacomm.SerialPort;
 
 import java.text.ParseException;
-
-import junit.framework.TestCase;
-
-import com.parallelsymmetry.utility.comm.SerialSettings;
 
 public class SerialSettingsTest extends TestCase {
 

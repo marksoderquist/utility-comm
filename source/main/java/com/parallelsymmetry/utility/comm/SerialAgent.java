@@ -1,29 +1,22 @@
 package com.parallelsymmetry.utility.comm;
 
-import gnu.io.CommPortIdentifier;
-import gnu.io.NoSuchPortException;
-import gnu.io.PortInUseException;
-import gnu.io.SerialPort;
-import gnu.io.SerialPortEvent;
-import gnu.io.SerialPortEventListener;
-import gnu.io.UnsupportedCommOperationException;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.TooManyListenersException;
+//import gnu.io.CommPortIdentifier;
+//import gnu.io.NoSuchPortException;
+//import gnu.io.PortInUseException;
+//import gnu.io.SerialPort;
+//import gnu.io.SerialPortEvent;
+//import gnu.io.SerialPortEventListener;
+//import gnu.io.UnsupportedCommOperationException;
 
 import com.parallelsymmetry.utility.ConfigurationException;
 import com.parallelsymmetry.utility.Parameters;
 import com.parallelsymmetry.utility.agent.PipeAgent;
 import com.parallelsymmetry.utility.log.Log;
+import purejavacomm.*;
+
+import java.io.*;
+import java.text.ParseException;
+import java.util.*;
 
 /**
  * @author mvsoder
