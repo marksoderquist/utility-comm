@@ -1,13 +1,5 @@
 package com.parallelsymmetry.utility.comm;
 
-//import gnu.io.CommPortIdentifier;
-//import gnu.io.NoSuchPortException;
-//import gnu.io.PortInUseException;
-//import gnu.io.SerialPort;
-//import gnu.io.SerialPortEvent;
-//import gnu.io.SerialPortEventListener;
-//import gnu.io.UnsupportedCommOperationException;
-
 import com.parallelsymmetry.utility.ConfigurationException;
 import com.parallelsymmetry.utility.Parameters;
 import com.parallelsymmetry.utility.agent.PipeAgent;
@@ -44,21 +36,6 @@ public class SerialAgent extends PipeAgent implements SerialPortEventListener {
 	private SerialInputStream serialInput;
 
 	private byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
-
-	static {
-		try {
-			// This odd line of code helps deal with a difference between running in
-			// the real world and running in a development environment.
-			//if( SerialAgent.class.getClassLoader() == CommPortIdentifier.class.getClassLoader() ) System.loadLibrary( "rxtxSerial" );
-
-			System.loadLibrary( "rxtxSerial" );
-			CommPortIdentifier.getPortIdentifiers();
-			serialCommAvailable = true;
-		} catch( UnsatisfiedLinkError error ) {
-			serialCommAvailable = false;
-			Log.write( Log.WARN, error.getMessage() + ": " + System.getProperty( "java.library.path" ) );
-		}
-	}
 
 	public SerialAgent() {
 		this( null );
