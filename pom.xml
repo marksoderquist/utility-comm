@@ -19,11 +19,11 @@
 	<repositories>
 		<repository>
 			<id>psm</id>
-			<url>https://code.parallelsymmetry.com/repo/psm</url>
+			<url>https://code.xeomar.com/repo/psm</url>
 		</repository>
 		<repository>
 			<id>thirdparty</id>
-			<url>https://code.parallelsymmetry.com/repo/thirdparty</url>
+			<url>https://code.xeomar.com/repo/thirdparty</url>
 		</repository>
 	</repositories>
 
