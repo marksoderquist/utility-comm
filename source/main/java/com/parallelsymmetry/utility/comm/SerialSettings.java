@@ -1,6 +1,6 @@
 package com.parallelsymmetry.utility.comm;
 
-import gnu.io.SerialPort;
+import purejavacomm.SerialPort;
 
 import java.text.ParseException;
 import java.util.NoSuchElementException;
@@ -194,7 +194,7 @@ public class SerialSettings {
 
 	@Override
 	public boolean equals( Object object ) {
-		if( !( object instanceof SerialSettings ) ) return false;
+		if( !(object instanceof SerialSettings) ) return false;
 		SerialSettings that = (SerialSettings)object;
 		return this.baud == that.baud && this.bits == that.bits && this.parity == that.parity && this.stop == that.stop;
 	}
