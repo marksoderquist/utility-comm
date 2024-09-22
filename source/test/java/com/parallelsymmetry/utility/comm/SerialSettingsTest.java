@@ -1,12 +1,15 @@
 package com.parallelsymmetry.utility.comm;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import purejavacomm.SerialPort;
 
 import java.text.ParseException;
 
-public class SerialSettingsTest extends TestCase {
+import static org.junit.jupiter.api.Assertions.*;
 
+public class SerialSettingsTest {
+
+	@Test
 	public void testParse() throws Exception {
 		SerialSettings settings = null;
 
@@ -75,6 +78,7 @@ public class SerialSettingsTest extends TestCase {
 		assertEquals( SerialPort.STOPBITS_1, settings.getStop() );
 	}
 
+	@Test
 	public void testParseBaudFailures() throws Exception {
 		SerialSettings settings = null;
 
@@ -87,6 +91,7 @@ public class SerialSettingsTest extends TestCase {
 		assertNull( settings );
 	}
 
+	@Test
 	public void testParseBitsFailures() throws Exception {
 		SerialSettings settings = null;
 
@@ -115,6 +120,7 @@ public class SerialSettingsTest extends TestCase {
 		assertNull( settings );
 	}
 
+	@Test
 	public void testParseParityFailures() throws Exception {
 		SerialSettings settings = null;
 
@@ -143,6 +149,7 @@ public class SerialSettingsTest extends TestCase {
 		assertNull( settings );
 	}
 
+	@Test
 	public void testParseStopBitsFailures() throws Exception {
 		SerialSettings settings = null;
 
@@ -171,8 +178,9 @@ public class SerialSettingsTest extends TestCase {
 		assertNull( settings );
 	}
 
+	@Test
 	public void testToString() throws Exception {
-		String settings = null;
+		String settings;
 
 		settings = "COM3,300,5,n,1";
 		assertEquals( settings, SerialSettings.parse( settings ).toString() );
@@ -186,15 +194,16 @@ public class SerialSettingsTest extends TestCase {
 		assertEquals( settings, SerialSettings.parse( settings ).toString() );
 	}
 
+	@Test
 	public void testEquals() throws Exception {
 		SerialSettings settings1 = SerialSettings.parse( "COM3,9600,8,n,1" );
 		SerialSettings settings2 = SerialSettings.parse( "COM3,9600,8,n,1" );
 		SerialSettings settings3 = SerialSettings.parse( "COM3,19200,8,n,1" );
 
-		assertTrue( settings1.equals( settings2 ) );
-		assertTrue( settings2.equals( settings1 ) );
-		assertFalse( settings1.equals( settings3 ) );
-		assertFalse( settings3.equals( settings1 ) );
+		assertEquals( settings1, settings2 );
+		assertEquals( settings2, settings1 );
+		assertNotEquals( settings1, settings3 );
+		assertNotEquals( settings3, settings1 );
 	}
 
 }
